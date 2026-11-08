@@ -41,6 +41,7 @@ input, select, textarea { font-size: 16px; color-scheme: dark; font-family: inhe
 .poster { position: relative; border: 2px solid rgba(255,255,255,.25); border-left: 6px solid #d10000; background: linear-gradient(160deg, #141414, #050505); transition: border-color .2s, box-shadow .2s; }
 .poster:hover { border-color: #d10000; box-shadow: 0 0 26px rgba(209,0,0,.55); }
 .bang:hover, .poster:hover { animation: bang .5s ease-in-out infinite; }
+.poster.notes-card:hover { animation: none; }
 @keyframes bang { 0%,100%{transform:translateY(0) rotate(0)} 25%{transform:translateY(4px) rotate(-.6deg)} 50%{transform:translateY(0)} 75%{transform:translateY(4px) rotate(.6deg)} }
 
 /* buttons: cut corners */

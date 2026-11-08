@@ -278,7 +278,7 @@ function Notes() {
       <div className="flex gap-2 mb-6">
         {Object.entries(NOTES).map(([k, [label]]) => <button key={k} onClick={() => setTab(k)} aria-pressed={tab === k} className={`tab ${tab === k ? 'on' : ''}`}>{label}</button>)}
       </div>
-      <div key={tab} className="poster p-6 drop">
+      <div key={tab} className="poster notes-card p-6 drop">
         <h2 className="font-metal text-3xl text-blood mb-5">{title}</h2>
         <ol className="grid gap-4">
           {items.map((t, i) => <li key={i} className="flex gap-4"><span className="font-term text-3xl text-blood leading-none">{String(i + 1).padStart(2, '0')}</span><span>{t}</span></li>)}
