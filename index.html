@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="csrf-token" content="">
+  <meta name="theme-color" content="#000000">
+  <title>PIERC.EXE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Metal+Mania&family=Special+Elite&family=VT323&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./resources/css/app.css">
+  <script>
+    tailwind = {
+      config: {
+        theme: {
+          extend: {
+            colors: { blood: '#d10000', ember: '#7a0000', ink: '#0a0a0a' },
+            fontFamily: { metal: ['"Metal Mania"', 'cursive'], type: ['"Special Elite"', 'monospace'], term: ['"VT323"', 'monospace'] }
+          }
+        }
+      }
+    };
+  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+  <div id="app"></div>
+  <script>
+    (async () => {
+      const root = document.getElementById('app');
+      try {
+        const response = await fetch('./resources/js/app.jsx');
+        if (!response.ok) throw new Error(`Could not load app.jsx (${response.status})`);
+        const source = (await response.text()).replace(/^import\s+.*?;\s*$/gm, '');
+        const compiled = Babel.transform(source, { presets: [['react', { runtime: 'classic' }]] }).code;
+        new Function('React', 'ReactDOM', `const { useEffect, useRef, useState } = React;
+          const { createRoot } = ReactDOM;
+          ${compiled}`)(React, ReactDOM);
+      } catch (error) {
+        console.error('Unable to start PIERC.EXE:', error);
+        root.textContent = 'The app could not start. Check the browser console for details.';
+      }
+    })();
+  </script>
+</body>
+</html>
