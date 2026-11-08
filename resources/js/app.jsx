@@ -175,9 +175,10 @@ function Inquire() {
     const fd = new FormData();
     Object.entries(f).forEach(([k, v]) => { if (v !== '' && v !== null) fd.append(k, v); });
     try {
-      const res = await fetch(pageUrl('/inquiries'), {
+      const csrfToken = document.querySelector('meta[name=csrf-token]')?.content;
+      const res = await fetch(pageUrl(csrfToken ? '/inquiries' : '/api/inquiries'), {
         method: 'POST',
-        headers: { Accept: 'application/json', 'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').content },
+        headers: { Accept: 'application/json', ...(csrfToken ? { 'X-CSRF-TOKEN': csrfToken } : {}) },
         body: fd,
       });
       if (res.status === 422) { setErrors((await res.json()).errors || {}); setStatus('idle'); return; }
@@ -221,7 +222,7 @@ function Inquire() {
               <p className="text-sm text-white/80">Upload a letter signed by your parent or guardian. Include their full name, signature, date, contact number, your name, and the piercing they allow. We may contact them to confirm, and having them present is best.</p>
               <div><input className={input} placeholder="Parent / guardian full name *" value={f.guardian_name} onChange={set('guardian_name')} /><Err k="guardian_name" /></div>
               <div><input className={input} type="tel" placeholder="Parent / guardian phone *" value={f.guardian_phone} onChange={set('guardian_phone')} /><Err k="guardian_phone" /></div>
-              <div><label className="block text-sm mb-2">Consent letter (PDF, JPG or PNG, max 5MB) *</label>
+              <div><label className="block text-sm mb-2">Consent letter (PDF, JPG or PNG, max 4MB) *</label>
                 <input type="file" accept=".pdf,.jpg,.jpeg,.png" onChange={set('consent_letter')} className="block w-full text-sm file:mr-4 file:border-0 file:bg-blood file:text-white file:px-4 file:py-2 file:cursor-pointer" /><Err k="consent_letter" /></div>
             </div>
           )}
