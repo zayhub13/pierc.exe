@@ -10,6 +10,13 @@ const SERVICES = [
   ['NAVEL', 'Navel piercings, after a quick check that your anatomy suits it.'],
   ['JEWELRY', 'Implant grade titanium, steel, swaps and downsizing.'],
 ];
+const PRICE_LIST = [
+  ['Ear Piercing', [['Lobe', 200], ['Helix', 350], ['Forward helix', 350], ['Flat', 350], ['Conch', 350], ['Industrial', 600], ['Tragus', 350]]],
+  ['Facial Piercing', [['Nostril', 350], ['Septum', 350], ['Eyebrow', 350]]],
+  ['Body Piercing', [['Navel', 400]]],
+  ['Lip Piercing', [['Labret', 350], ['Vertical labret', 350], ['Monroe', 350], ['Snake bites', 600], ['Spider bites', 600]]],
+  ['Oral Piercing', [['Smiley', 400], ['Tongue', 400]]],
+];
 const TYPES = ['Ear', 'Nose', 'Lip / Oral', 'Brow / Face', 'Navel', 'Jewelry change', 'Not sure yet'];
 const currentPath = window.location.pathname.replace(/\/+$/, '');
 const APP_BASE_PATH = currentPath === '/notes' ? '' : currentPath;
@@ -78,7 +85,7 @@ function Boot() {
 
 function Nav() {
   const [open, setOpen] = useState(false);
-  const links = [['Services', pageUrl('/#services')], ['Process', pageUrl('/#process')], ['Notes', pageUrl('/?page=notes')], ['Inquire', pageUrl('/#inquire')]];
+  const links = [['Services', pageUrl('/#services')], ['Prices', pageUrl('/#prices')], ['Process', pageUrl('/#process')], ['Notes', pageUrl('/?page=notes')], ['Inquire', pageUrl('/#inquire')]];
   const bar = 'block w-6 h-0.5 bg-white transition-all';
   return (
     <header className="fixed top-0 inset-x-0 z-40 bg-black/90 backdrop-blur border-b-4 border-blood">
@@ -139,6 +146,32 @@ function Services() {
           </div></Reveal>
         ))}
       </div>
+    </section>
+  );
+}
+
+function PriceList() {
+  return (
+    <section id="prices" className="max-w-6xl mx-auto px-4 py-16 sm:py-24">
+      <H2>PIERCING <span className="text-blood">PRICE LIST</span></H2>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        {PRICE_LIST.map(([category, items]) => (
+          <Reveal key={category} className="h-full">
+            <div className="poster h-full p-6">
+              <h3 className="font-metal text-3xl text-blood mb-4">{category}</h3>
+              <ul className="grid gap-3">
+                {items.map(([name, price]) => (
+                  <li key={name} className="flex items-baseline justify-between gap-4 border-b border-white/10 pb-2">
+                    <span>{name}</span>
+                    <span className="font-term text-2xl whitespace-nowrap">₱{price}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </Reveal>
+        ))}
+      </div>
+      <p className="mt-5 text-sm text-white/60">Prices are in Philippine pesos. Final placement is subject to an anatomy check.</p>
     </section>
   );
 }
@@ -267,7 +300,7 @@ function App() {
     <>
       {!notes && <Boot />}<div className="grain" /><div className="vignette" />
       <Nav />
-      {notes ? <Notes /> : <><Hero /><Tickers /><Services /><Zig /><Process /><Zig /><Inquire /></>}
+      {notes ? <Notes /> : <><Hero /><Tickers /><Services /><Zig /><PriceList /><Zig /><Process /><Zig /><Inquire /></>}
       <footer className="border-t-4 border-blood bg-black py-10 text-center text-white/60 text-sm px-5">
         <Logo cls="text-4xl" />
         <p className="mt-3">Home service and meetups only. Minors need a signed parent or guardian consent letter.</p>
